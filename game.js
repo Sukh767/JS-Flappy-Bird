@@ -193,7 +193,7 @@ const bird = {
       this.rotatation = Math.min(90, (90 * this.speed) / (this.thrust * 2));
     }
   },
-  collisioned: function () {
+collisioned: function () {
     if (!pipe.pipes.length) return;
     let bird = this.animations[0].sprite;
     let x = pipe.pipes[0].x;
@@ -202,20 +202,19 @@ const bird = {
     let roof = y + parseFloat(pipe.top.sprite.height);
     let floor = roof + pipe.gap;
     let w = parseFloat(pipe.top.sprite.width);
-    if (this.x + r >= x) {
-      if (this.x + r < x + w) {
-        if (this.y - r <= roof || this.y + r >= floor) {
-          SFX.hit.play();
-          return true;
-        }
-      } else if (pipe.moved) {
-        UI.score.curr++;
-        SFX.score.play();
-        pipe.moved = false;
+    if (this.x + r >= x && this.x - r < x + w) {
+      if (this.y - r <= roof || this.y + r >= floor) {
+        SFX.hit.play();
+        return true;
       }
+    } else if (pipe.moved) {
+      UI.score.curr++;
+      SFX.score.play();
+      pipe.moved = false;
     }
+    return false;
   },
-};
+
 const UI = {
   getReady: { sprite: new Image() },
   gameOver: { sprite: new Image() },
